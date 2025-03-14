@@ -21,4 +21,3 @@ def save_text_to_db(text, db_path='text_analysis.db'):
         print("Текст успешно сохранен в базу данных.")
     except Exception as e:
         print(f"Ошибка при сохранении текста в базу данных: {e}")
-

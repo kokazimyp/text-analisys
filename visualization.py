@@ -2,7 +2,9 @@ from collections import Counter, defaultdict
 import re
 import matplotlib.pyplot as plt
 import spacy
+
 nlp = spacy.load("ru_core_news_sm")
+
 
 def plot_word_frequency(text, top_n):
     words = text.split()
@@ -66,20 +68,17 @@ def plot_word_length_distribution_bywords(text):
 
 
 def plot_average_sentence_length(text):
-
-    pattern = r'\b(?:[1-9]|1[0-9]|20)\s+глава\b'
+    pattern = r'\b(\d+\s+глава\b'
     chapters = re.split(pattern, text)
     chapters = [chapter.strip() for chapter in chapters if chapter.strip()]
 
     avg_sentence_lengths = []
 
     for i, chapter in enumerate(chapters):
-
         sentences = re.split(r'[.!?]', chapter)
         sentences = [s for s in sentences if s.strip()]
 
         avg_sentence_length = sum(len(sentence.split()) for sentence in sentences) / len(sentences)
-
 
         avg_sentence_lengths.append(avg_sentence_length)
 
@@ -102,6 +101,7 @@ def plot_character_frequency(text):
     plt.title('Частота символов в тексте')
     plt.grid(axis='y')
     plt.show()
+
 
 def plot_word_length_distribution(text):
     words = text.split()
@@ -285,7 +285,7 @@ def plot_digit_frequency(text):
 
 
 def plot_word_sentence_comparison(text):
-    pattern = r'\b(?:[1-9]|1[0-9]|20)\s+глава\b'
+    pattern = r'\b(\d+)\s+глава\b'
     chapters = re.split(pattern, text)
     chapters = [chapter.strip() for chapter in chapters if chapter.strip()]
 
@@ -299,7 +299,6 @@ def plot_word_sentence_comparison(text):
 
         word_counts.append(len(words))
         sentence_counts.append(len(sentences))
-
 
     plt.figure(figsize=(10, 5))
     plt.plot(word_counts, label='Слова', color='hotpink', marker='o')
@@ -317,7 +316,7 @@ def plot_word_sentence_length_comparison(text):
         print("Ошибка: текст пустой.")
         return
 
-    pattern = r'\b(?:[1-9]|1[0-9]|20)\s+глава\b'
+    pattern = r'\b(\d+)\s+глава\b'
     chapters = re.split(pattern, text)
     chapters = [chapter.strip() for chapter in chapters if chapter.strip()]
 
@@ -325,7 +324,6 @@ def plot_word_sentence_length_comparison(text):
     avg_sentence_counts = []
 
     for i, chapter in enumerate(chapters):
-
         words = chapter.split()
         sentences = re.split(r'[.!?]', chapter)
         sentences = [s for s in sentences if s.strip()]
@@ -333,7 +331,6 @@ def plot_word_sentence_length_comparison(text):
         avg_sentence_count = len(sentences)
         avg_word_lengths.append(avg_word_length)
         avg_sentence_counts.append(avg_sentence_count)
-
 
     plt.figure(figsize=(12, 6))
 
@@ -356,7 +353,7 @@ def plot_word_sentence_length_comparison(text):
 
 
 def plot_pos_proportion(text):
-    pattern = r'\b(?:[1-9]|1[0-9]|20)\s+глава\b'
+    pattern = r'\b(\d+)\s+глава\b'
     chapters = re.split(pattern, text)
     chapters = [chapter.strip() for chapter in chapters if chapter.strip()]
 
@@ -396,7 +393,8 @@ def plot_pos_proportion(text):
     plt.subplot(1, 2, 2)
     x = range(1, len(pos_counts['существительные']) + 1)
     width = 0.2
-    plt.bar([i - width for i in x], pos_counts['существительные'], width=width, label='Существительные', color='hotpink')
+    plt.bar([i - width for i in x], pos_counts['существительные'], width=width, label='Существительные',
+            color='hotpink')
     plt.bar(x, pos_counts['глаголы'], width=width, label='Глаголы', color='deeppink')
     plt.bar([i + width for i in x], pos_counts['прилагательные'], width=width, label='Прилагательные', color='pink')
     plt.xlabel('Глава')
@@ -410,7 +408,7 @@ def plot_pos_proportion(text):
 
 
 def plot_punctuation_frequency(text):
-    pattern = r'\b(?:[1-9]|1[0-9]|20)\s+глава\b'
+    pattern = r'\b(\d+)\s+глава\b'
     chapters = re.split(pattern, text)
     chapters = [chapter.strip() for chapter in chapters if chapter.strip()]
 
@@ -422,7 +420,6 @@ def plot_punctuation_frequency(text):
         comma_counts.append(chapter.count(','))
         period_counts.append(chapter.count('.'))
         exclamation_counts.append(chapter.count('!'))
-
 
     plt.figure(figsize=(12, 6))
 
@@ -509,6 +506,7 @@ def get_keywords_from_user():
     keywords = [keyword.strip() for keyword in keywords_input.split(",")]
     return keywords
 
+
 def plot_keyword_dynamics(text, keywords, window_size=100):
     words = text.split()
     num_windows = (len(words) // window_size) + 1
@@ -539,7 +537,7 @@ def plot_keyword_dynamics(text, keywords, window_size=100):
 
 
 def plot_complex_simple_words(text, threshold=8):
-    pattern = r'\b(?:[1-9]|1[0-9]|20)\s+глава\b'
+    pattern = r'\b(\d+)\s+глава\b'
     chapters = re.split(pattern, text)
     chapters = [chapter.strip() for chapter in chapters if chapter.strip()]
 
@@ -555,8 +553,10 @@ def plot_complex_simple_words(text, threshold=8):
         simple_word_counts.append(len(simple_words))
 
     total_words = [complex + simple for complex, simple in zip(complex_word_counts, simple_word_counts)]
-    complex_percent = [complex / total * 100 if total > 0 else 0 for complex, total in zip(complex_word_counts, total_words)]
-    simple_percent = [simple / total * 100 if total > 0 else 0 for simple, total in zip(simple_word_counts, total_words)]
+    complex_percent = [complex / total * 100 if total > 0 else 0 for complex, total in
+                       zip(complex_word_counts, total_words)]
+    simple_percent = [simple / total * 100 if total > 0 else 0 for simple, total in
+                      zip(simple_word_counts, total_words)]
 
     plt.figure(figsize=(12, 6))
 
@@ -571,7 +571,8 @@ def plot_complex_simple_words(text, threshold=8):
 
     plt.subplot(1, 2, 2)
     plt.bar(range(1, len(chapters) + 1), complex_word_counts, label='Сложные слова', color='pink')
-    plt.bar(range(1, len(chapters) + 1), simple_word_counts, label='Простые слова', color='deeppink', bottom=complex_word_counts)
+    plt.bar(range(1, len(chapters) + 1), simple_word_counts, label='Простые слова', color='deeppink',
+            bottom=complex_word_counts)
     plt.xlabel('Глава')
     plt.ylabel('Количество слов')
     plt.title('Абсолютная частота слов по главам')

@@ -23,6 +23,3 @@ def load_borrowed_words(filename):
         return borrowed_words
     except FileNotFoundError:
         return f"\nОшибка: Файл '{filename}' не найден. Проверьте путь к файлу."
-
-
-
